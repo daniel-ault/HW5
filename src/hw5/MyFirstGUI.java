@@ -166,8 +166,8 @@ public class MyFirstGUI extends JFrame
     public void clearPixels() {
         for (int i = 0; i < pixels.length; i++) {
             for (int j = 0; j < pixels[i].length; j++) {
-                pixels[i][j].setColor(Color.WHITE);//.setDefaultColor();
-                System.out.println(pixels[i][j].toString());
+                pixels[i][j].setDefaultColor();
+                pixels[i][j].repaint();
             }
         }
     }
