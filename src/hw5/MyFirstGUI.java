@@ -66,11 +66,12 @@ public class MyFirstGUI extends JFrame
 
         // add the color buttons to a container
         JPanel buttonContainer = new JPanel();
-        buttonContainer.setLayout(new GridLayout(4, 1));
+        buttonContainer.setLayout(new GridLayout(0, 2));
         buttonContainer.add(rSlider);
-        buttonContainer.add(gSlider);
-        buttonContainer.add(bSlider);
         buttonContainer.add(clearButton);
+        buttonContainer.add(gSlider);
+        buttonContainer.add(clearButton);
+        buttonContainer.add(bSlider);
         
         // initialize the sliders
         initializeSlider(rSlider, "Red");
@@ -88,8 +89,8 @@ public class MyFirstGUI extends JFrame
     
     private void initializeSlider(JSlider slider, String name)
     {
-        slider.setMajorTickSpacing(128);
-        
+        slider.setMajorTickSpacing(255);
+        slider.setMinorTickSpacing(64);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         slider.setName(name);
