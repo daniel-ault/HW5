@@ -13,16 +13,21 @@ package hw5;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class MyFirstGUI extends JFrame
 {
     // these instance variables are declared out here so that the event handlers can access the objects
     private JTextField tf = new JTextField();
     private Pixel[][] pixels = new Pixel[40][75];
-    private JButton b1 = new JButton("Red");
-    private JButton b2 = new JButton("Green");
-    private JButton b3 = new JButton("Blue");
+    private JSlider rSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 0);
+    private JSlider bSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 0);
+    private JSlider gSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 0);
+    private JButton clearButton = new JButton("Clear");
 
     private Color currentColor = Color.BLACK;
     private boolean isMouseDown = false;
@@ -31,14 +36,16 @@ public class MyFirstGUI extends JFrame
     {
         setTitle("The Worst Paint Program Ever");
         setSize(400, 250);
-//		setResizable(false);
+//          setResizable(false);
 
         // to respond to presses, each button must be registered with an 
         //  action listener
         ButtonHandler bh = new ButtonHandler();
-        b1.addActionListener(bh);
-        b2.addActionListener(bh);
-        b3.addActionListener(bh);
+        clearButton.addActionListener(bh);
+        
+        SliderHandler ah = new SliderHandler();
+        rSlider.addChangeListener(ah);
+        
 
         // we add GUI elements to a JPanel object, then set that JPanel as the
         //  "content pane" of the JFrame
@@ -59,9 +66,10 @@ public class MyFirstGUI extends JFrame
         // add the color buttons to a container
         JPanel buttonContainer = new JPanel();
         buttonContainer.setLayout(new GridLayout(1, 3));
-        buttonContainer.add(b1);
-        buttonContainer.add(b2);
-        buttonContainer.add(b3);
+        buttonContainer.add(rSlider);
+        buttonContainer.add(gSlider);
+        buttonContainer.add(bSlider);
+        buttonContainer.add(clearButton);
 
         // add the elements to the content pane
         c.add(buttonContainer, BorderLayout.NORTH);
@@ -116,19 +124,36 @@ public class MyFirstGUI extends JFrame
     //  specifies how the button should react to action events (in this case,
     //  button presses)
     private class ButtonHandler implements ActionListener
-    {
+    {   
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             // figure out which button fired the ActionEvent
             Object source = e.getSource();
 
-            if (source == b1)
-                    currentColor = Color.RED;
-            else if (source == b2)
-                    currentColor = Color.GREEN;
-            else
-                    currentColor = Color.BLUE;
+            if (source == clearButton) {
+                clearPixels();
+            }
             tf.setText("I choose you, " + currentColor);
+        }
+    }
+    
+    private class SliderHandler implements ChangeListener
+    {
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            Object source = e.getSource();
+            
+            currentColor = new Color(rSlider.getValue(), gSlider.getValue(), bSlider.getValue());
+        }
+    }
+    
+    public void clearPixels() {
+        for (int i = 0; i < pixels.length; i++) {
+            for (int j = 0; j < pixels[i].length; j++) {
+                pixels[i][j].setColor(Color.WHITE);//.setDefaultColor();
+                System.out.println(pixels[i][j].toString());
+            }
         }
     }
 
