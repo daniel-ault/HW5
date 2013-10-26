@@ -45,7 +45,8 @@ public class MyFirstGUI extends JFrame
         
         SliderHandler ah = new SliderHandler();
         rSlider.addChangeListener(ah);
-        
+        gSlider.addChangeListener(ah);
+        bSlider.addChangeListener(ah);
 
         // we add GUI elements to a JPanel object, then set that JPanel as the
         //  "content pane" of the JFrame
@@ -65,11 +66,16 @@ public class MyFirstGUI extends JFrame
 
         // add the color buttons to a container
         JPanel buttonContainer = new JPanel();
-        buttonContainer.setLayout(new GridLayout(1, 3));
+        buttonContainer.setLayout(new GridLayout(4, 1));
         buttonContainer.add(rSlider);
         buttonContainer.add(gSlider);
         buttonContainer.add(bSlider);
         buttonContainer.add(clearButton);
+        
+        // initialize the sliders
+        initializeSlider(rSlider, "Red");
+        initializeSlider(gSlider, "Green");
+        initializeSlider(bSlider, "Blue");
 
         // add the elements to the content pane
         c.add(buttonContainer, BorderLayout.NORTH);
@@ -78,6 +84,15 @@ public class MyFirstGUI extends JFrame
 
         setContentPane(c);
         setVisible(true);
+    }
+    
+    private void initializeSlider(JSlider slider, String name)
+    {
+        slider.setMajorTickSpacing(128);
+        
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setName(name);
     }
 
     // Event handler class for mouse events.  Each instance of MouseHandler is associated
