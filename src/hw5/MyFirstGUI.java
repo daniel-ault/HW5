@@ -39,7 +39,7 @@ public class MyFirstGUI extends JFrame
     public MyFirstGUI()
     {
         setTitle("The Worst Paint Program Ever");
-        setSize(400, 250);
+        setSize(350, 300);
 //		setResizable(false);
         
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
