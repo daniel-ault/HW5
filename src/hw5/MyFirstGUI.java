@@ -31,7 +31,7 @@ public class MyFirstGUI extends JFrame
     private JButton buttonClear = new JButton("Clear");
     private JButton buttonChooseColor = new JButton("Choose Color");
     
-    private JPanel panelEmpty = new JPanel();
+    private Pixel panelColor = new Pixel();
 
     private Color currentColor = Color.BLACK;
     private boolean isMouseDown = false;
@@ -43,6 +43,8 @@ public class MyFirstGUI extends JFrame
 //		setResizable(false);
         
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
+        panelColor.setColor(currentColor);
 
         // to respond to presses, each button must be registered with an 
         //  action listener
@@ -79,7 +81,7 @@ public class MyFirstGUI extends JFrame
         buttonContainer.add(labelRed);
         buttonContainer.add(labelGreen);
         buttonContainer.add(labelBlue);
-        buttonContainer.add(panelEmpty);
+        buttonContainer.add(panelColor);
         buttonContainer.add(b1);
         buttonContainer.add(b2);
         buttonContainer.add(b3);
@@ -166,7 +168,6 @@ public class MyFirstGUI extends JFrame
         @Override
         public void stateChanged(ChangeEvent e) 
         {
-            JOptionPane.showMessageDialog(null, ((JSpinner)e.getSource()).getValue());
             checkSpinner(b1);
             checkSpinner(b2);
             checkSpinner(b3);
@@ -176,6 +177,8 @@ public class MyFirstGUI extends JFrame
             int blue = (Integer)b3.getValue();
             
             currentColor = new Color(red, green, blue);
+            panelColor.setColor(currentColor);
+            panelColor.repaint();
             tf.setText("I choose you, " + currentColor);
         }
     }
