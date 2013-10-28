@@ -37,6 +37,8 @@ public class MyFirstGUI extends JFrame
         setTitle("The Worst Paint Program Ever");
         setSize(400, 250);
 //          setResizable(false);
+        
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // to respond to presses, each button must be registered with an 
         //  action listener
