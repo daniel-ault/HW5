@@ -14,16 +14,24 @@ package hw5;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class MyFirstGUI extends JFrame
 {
     // these instance variables are declared out here so that the event handlers can access the objects
     private JTextField tf = new JTextField();
     private Pixel[][] pixels = new Pixel[40][75];
-    private JButton b1 = new JButton("Red");
-    private JButton b2 = new JButton("Green");
-    private JButton b3 = new JButton("Blue");
+    private JLabel labelRed = new JLabel("Red");
+    private JLabel labelGreen = new JLabel("Green");
+    private JLabel labelBlue = new JLabel("Blue");
+    private JSpinner b1 = new JSpinner();    // Red spinner
+    private JSpinner b2 = new JSpinner();    // Green spinner
+    private JSpinner b3 = new JSpinner();    // Blue spinner
     private JButton buttonClear = new JButton("Clear");
+    private JButton buttonChooseColor = new JButton("Choose Color");
+    
+    private JPanel panelEmpty = new JPanel();
 
     private Color currentColor = Color.BLACK;
     private boolean isMouseDown = false;
@@ -39,10 +47,15 @@ public class MyFirstGUI extends JFrame
         // to respond to presses, each button must be registered with an 
         //  action listener
         ButtonHandler bh = new ButtonHandler();
-        b1.addActionListener(bh);
-        b2.addActionListener(bh);
-        b3.addActionListener(bh);
+        //b1.addActionListener(bh);
+        //b2.addActionListener(bh);
+        //b3.addActionListener(bh);
         buttonClear.addActionListener(bh);
+        
+        SpinnerHandler sh = new SpinnerHandler();
+        b1.addChangeListener(sh);
+        b2.addChangeListener(sh);
+        b3.addChangeListener(sh);
 
         // we add GUI elements to a JPanel object, then set that JPanel as the
         //  "content pane" of the JFrame
@@ -62,7 +75,11 @@ public class MyFirstGUI extends JFrame
 
         // add the color buttons to a container
         JPanel buttonContainer = new JPanel();
-        buttonContainer.setLayout(new GridLayout(1, 4));
+        buttonContainer.setLayout(new GridLayout(2, 4));
+        buttonContainer.add(labelRed);
+        buttonContainer.add(labelGreen);
+        buttonContainer.add(labelBlue);
+        buttonContainer.add(panelEmpty);
         buttonContainer.add(b1);
         buttonContainer.add(b2);
         buttonContainer.add(b3);
@@ -75,6 +92,15 @@ public class MyFirstGUI extends JFrame
 
         setContentPane(c);
         setVisible(true);
+    }
+    
+    private void initSpinners() {
+        //new SpinnerNumberModel(initial, min, max, step)
+        SpinnerModel model = new SpinnerNumberModel(0, 0, 255, 1);
+        
+        b1.setModel(model);
+        b2.setModel(model);
+        b3.setModel(model);
     }
 
     // Event handler class for mouse events.  Each instance of MouseHandler is associated
@@ -126,18 +152,42 @@ public class MyFirstGUI extends JFrame
         {
             // figure out which button fired the ActionEvent
             Object source = e.getSource();
-
-            if (source == b1)
-                currentColor = Color.RED;
-            else if (source == b2)
-                currentColor = Color.GREEN;
-            else if (source == b3)
-                currentColor = Color.BLUE;
-            else if (source == buttonClear)
+            
+            //if (source == buttonChooseColor)
+                //setColor();
+            if (source == buttonClear)
                 clearPixels();
+        }
+    }
+    
+    
+    private class SpinnerHandler implements ChangeListener 
+    {
+        @Override
+        public void stateChanged(ChangeEvent e) 
+        {
+            JOptionPane.showMessageDialog(null, ((JSpinner)e.getSource()).getValue());
+            checkSpinner(b1);
+            checkSpinner(b2);
+            checkSpinner(b3);
+            
+            int red = (Integer)b1.getValue();
+            int green = (Integer)b2.getValue();
+            int blue = (Integer)b3.getValue();
+            
+            currentColor = new Color(red, green, blue);
             tf.setText("I choose you, " + currentColor);
         }
     }
+    
+    private void checkSpinner(JSpinner spinner)
+    {
+        if ((Integer)spinner.getValue() > 255)
+            spinner.setValue((Object)(new Integer(255)));
+        else if ((Integer)spinner.getValue() < 0)
+            spinner.setValue((Object)(new Integer(0)));
+    }
+    
     
     public void clearPixels()
     {
