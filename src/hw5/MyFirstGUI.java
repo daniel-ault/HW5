@@ -23,6 +23,7 @@ public class MyFirstGUI extends JFrame
     private JButton b1 = new JButton("Red");
     private JButton b2 = new JButton("Green");
     private JButton b3 = new JButton("Blue");
+    private JButton buttonClear = new JButton("Clear");
 
     private Color currentColor = Color.BLACK;
     private boolean isMouseDown = false;
@@ -39,6 +40,7 @@ public class MyFirstGUI extends JFrame
         b1.addActionListener(bh);
         b2.addActionListener(bh);
         b3.addActionListener(bh);
+        buttonClear.addActionListener(bh);
 
         // we add GUI elements to a JPanel object, then set that JPanel as the
         //  "content pane" of the JFrame
@@ -58,10 +60,11 @@ public class MyFirstGUI extends JFrame
 
         // add the color buttons to a container
         JPanel buttonContainer = new JPanel();
-        buttonContainer.setLayout(new GridLayout(1, 3));
+        buttonContainer.setLayout(new GridLayout(1, 4));
         buttonContainer.add(b1);
         buttonContainer.add(b2);
         buttonContainer.add(b3);
+        buttonContainer.add(buttonClear);
 
         // add the elements to the content pane
         c.add(buttonContainer, BorderLayout.NORTH);
@@ -123,12 +126,24 @@ public class MyFirstGUI extends JFrame
             Object source = e.getSource();
 
             if (source == b1)
-                    currentColor = Color.RED;
+                currentColor = Color.RED;
             else if (source == b2)
-                    currentColor = Color.GREEN;
-            else
-                    currentColor = Color.BLUE;
+                currentColor = Color.GREEN;
+            else if (source == b3)
+                currentColor = Color.BLUE;
+            else if (source == buttonClear)
+                clearPixels();
             tf.setText("I choose you, " + currentColor);
+        }
+    }
+    
+    public void clearPixels()
+    {
+        for (int i = 0; i < pixels.length; i++) {
+            for (int j = 0; j < pixels[i].length; j++) {
+                pixels[i][j].setDefaultColor();
+                pixels[i][j].repaint();
+            }
         }
     }
 
