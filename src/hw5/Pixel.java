@@ -15,11 +15,17 @@ import javax.swing.*;
 
 public class Pixel extends JPanel
 {
-    private Color color = Color.PINK;
+    private static Color DEFAULT_COLOR = Color.WHITE;
+    private Color color = DEFAULT_COLOR;
 
     public void setColor(Color c)
     {
         this.color = c;
+    }
+    
+    public void setDefaultColor()
+    {
+        this.color = DEFAULT_COLOR;
     }
 
     // the paintComponent method is called whenever an item is rendered on the screen
